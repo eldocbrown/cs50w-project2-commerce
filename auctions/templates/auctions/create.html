@@ -4,7 +4,15 @@
     <h2>Create New Listing</h2>
 
     {% if user.is_authenticated %}
-    TODO
+      <div class="form_container">
+        <form action="{% url 'auctions:create' %}" method="post" style="height:100%;width:100%">
+          {% csrf_token %}
+          {{ createListingForm.as_p }}
+          <div class="button_container">
+            <input class="submit_button" type="submit" value="Create">
+          </div>
+        </form>
+      </div>
     {% else %}
     Not signed in.
     {% endif %}
