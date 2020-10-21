@@ -1,3 +1,41 @@
 body {
     padding: 10px;
 }
+
+.listingsContainer {
+  width: 100%;
+}
+
+.listingItem {
+  display: flex;
+  margin-top: 10px;
+  height: 225px;
+}
+
+.listingItemInfo {
+  float: right;
+  padding:30px;
+  width: 70%;
+}
+
+.listingItemImage {
+  width: 30%;
+  float: left;
+}
+
+.listingItemPrice {
+  margin-top: 5px;
+}
+
+.listingItemDescription {
+  margin-top: 5px;
+}
+
+.itemImage {
+    width: 100%;
+    padding:50px;
+}
+
+.itemTitle {
+  font-weight: bold;
+}

@@ -2,6 +2,29 @@
 
 {% block body %}
     <h2>Active Listings</h2>
+    <div class="listingsContainer">
+      {% for l in listings %}
+      <div class="listingItem border">
+        <div class="listingItemImage">
+          <img class="itemImage" src="{{ l.imageLink }}">
+        </div>
+        <div class="listingItemInfo">
+          <div class="listingItemTitle">
+            <span class="itemTitle">{{ l.title }}</span>
+          </div>
+          <div class="listingItemPrice">
+            <strong>Price: </strong>
+            <span class="itemPrice">
+              <!-- TODO: Place last bid if there are any -->
+              $ {{l.startingPrice}}
+            </span>
+          </div>
+          <div class="listingItemDescription">
+            <small><span class="itemDescription">{{ l.description }}</span></small>
+          </div>
+        </div>
+      </div>
 
-    TODO
+      {% endfor %}
+    </div>
 {% endblock %}
