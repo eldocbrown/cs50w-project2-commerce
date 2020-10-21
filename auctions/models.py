@@ -18,3 +18,4 @@ class Listing(models.Model):
     imageLink = models.URLField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="catListings", null=True, blank=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="usrListings")
+    active = models.BooleanField(default=True)
