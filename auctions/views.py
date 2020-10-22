@@ -87,22 +87,12 @@ def create(request):
         })
 
 def listing(request, id):
-    try:
-        l = Listing.objects.get(pk=id)
-    except ObjectDoesNotExist:
-        return render(request, "auctions/error.html", {
-            "message": "Listing not found."
-        })
-    except Exception as e:
-        return render(request, "auctions/error.html", {
-            "message": e
-        })
-    else:
-        return render(request, "auctions/listing.html", {
-            "listing": l,
-            "bidForm": BidForm(),
-            "watchers": l.watchedBy.all()
-        })
+    l = getListing(id)
+    return render(request, "auctions/listing.html", {
+        "listing": l,
+        "bidForm": BidForm(),
+        "watchers": l.watchedBy.all()
+    })
 
 def bid(request, id):
     l = getListing(id)
