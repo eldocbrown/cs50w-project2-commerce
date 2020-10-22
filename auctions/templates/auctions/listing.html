@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+  <div class="listingHeaderContainer">
+    <div class="listingTitleContainer">
+      <h2>Listing: {{ listing.title }}</h2>
+    </div>
+    {% if user.is_authenticated %}
+    <div class="listingWatchlistStarContainer">
+      {% if user not in watchers %}
+        <img class="listingWatchlistStar" src="/static/image/icon/star.png" title="Add to Watchlist">
+      {% else %}
+        <img class="listingWatchlistStar" src="/static/image/icon/star-filled.png" title="Remove from Watchlist">
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="listingImageContainer">
+    <img class="listingImage" src="{{ listing.imageLink }}">
+  </div>
+  <div class="listingDescriptionContainer">
+    <small><span class="itemDescription">{{ listing.description }}</span></small>
+  </div>
+  <div class="listingPriceContainer">
+    <span class="itemPrice">
+      <strong>Price: </strong>$
+      {% if listing.lastBid is None %}
+        {{ listing.startingPrice }}<small><i>&nbsp;&nbsp;&nbsp;(No bids yet)</i></small>
+      {% else %}
+        {{ listing.lastBid.price }}
+      {% endif %}
+    </span>
+  </div>
+  {% if user.is_authenticated %}
+  <div class="listingBidContainer">
+    <form action="{% url 'auctions:bid' listing.id %}" method="post">
+      {% csrf_token %}
+      <div class="submitBidContainer">
+        {{ bidForm }}
+        <input class="submitBidButton btn btn-primary" type="submit" value="Place Bid">
+      </div>
+    </form>
+  </div>
+  {% endif %}
+{% endblock %}

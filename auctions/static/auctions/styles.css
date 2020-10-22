@@ -38,4 +38,46 @@ body {
 
 .itemTitle {
   font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.itemPrice {
+  text-decoration: none;
+  color: black;
+}
+
+.itemDescription {
+  text-decoration: none;
+  color: black;
+}
+
+.listingHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listingWatchlistStar {
+  height: 25px;
+  margin-bottom: 10px;
+}
+
+.listingImage {
+  height: 250px;
+  padding: 20px;
+}
+
+.listingPriceContainer {
+  margin-top: 10px;
+}
+
+.submitBidContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.submitBidButton {
+  margin-left: 20px;
 }
