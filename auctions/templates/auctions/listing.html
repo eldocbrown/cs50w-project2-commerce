@@ -8,9 +8,13 @@
     {% if user.is_authenticated %}
     <div class="listingWatchlistStarContainer">
       {% if user not in watchers %}
-        <img class="listingWatchlistStar" src="/static/image/icon/star.png" title="Add to Watchlist">
+        <a href="{% url 'auctions:addwatch' listing.id %}">
+          <img class="listingWatchlistStar" src="/static/image/icon/star.png" title="Add to Watchlist">
+        </a>
       {% else %}
-        <img class="listingWatchlistStar" src="/static/image/icon/star-filled.png" title="Remove from Watchlist">
+        <a href="{% url 'auctions:removewatch' listing.id %}">
+          <img class="listingWatchlistStar" src="/static/image/icon/star-filled.png" title="Remove from Watchlist">
+        </a>
       {% endif %}
     </div>
     {% endif %}

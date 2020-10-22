@@ -105,8 +105,59 @@ def listing(request, id):
         })
 
 def bid(request, id):
+    l = getlisting(id)
+    f = BidForm(request.POST)
+    if f.is_valid():
+        # Get Bid object
+        bid = f.save(commit=False)
+        # Set bidder and relate to listing
+        bid.bidder = request.user
+        bid.listing = l
+        try: # Try setting bid to listing
+            l.bid(bid)
+        except Exception as ex:
+            return render(request, "auctions/error.html", {
+                "message": "Invalid Bid"
+            })
+        else:
+            # Save data
+            bid.save()
+            l.save()
+            f.save_m2m()
+            # Redirect to the listing page again
+            return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+    else:
+        return render(request, "auctions/error.html", {
+            "message": "Invalid Bid"
+        })
+
+def addwatch(request, id):
+    l = getListing(id)
     try:
-        l = Listing.objects.get(pk=id)
+        u = User.objects.get(username=request.user.username)
+        u.listingsWatched.add(l)
+        return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+    except Exception as e:
+        return render(request, "auctions/error.html", {
+            "message": e
+        })
+
+def removewatch(request, id):
+    l = getListing(id)
+    try:
+        u = User.objects.get(username=request.user.username)
+        u.listingsWatched.remove(l)
+        return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+    except Exception as e:
+        return render(request, "auctions/error.html", {
+            "message": e
+        })
+    return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+
+# Auxiliary functions
+def getListing(id):
+    try:
+        return Listing.objects.get(pk=id)
     except ObjectDoesNotExist:
         return render(request, "auctions/error.html", {
             "message": "Listing not found."
@@ -115,28 +166,3 @@ def bid(request, id):
         return render(request, "auctions/error.html", {
             "message": e
         })
-    else:
-        f = BidForm(request.POST)
-        if f.is_valid():
-            # Get Bid object
-            bid = f.save(commit=False)
-            # Set bidder and relate to listing
-            bid.bidder = request.user
-            bid.listing = l
-            try: # Try setting bid to listing
-                l.bid(bid)
-            except Exception as ex:
-                return render(request, "auctions/error.html", {
-                    "message": "Invalid Bid"
-                })
-            else:
-                # Save data
-                bid.save()
-                l.save()
-                f.save_m2m()
-                # Redirect to the listing page again
-                return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':l.id}))
-        else:
-            return render(request, "auctions/error.html", {
-                "message": "Invalid Bid"
-            })
