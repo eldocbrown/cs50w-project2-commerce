@@ -105,7 +105,7 @@ def listing(request, id):
         })
 
 def bid(request, id):
-    l = getlisting(id)
+    l = getListing(id)
     f = BidForm(request.POST)
     if f.is_valid():
         # Get Bid object
