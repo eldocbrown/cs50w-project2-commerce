@@ -144,6 +144,16 @@ def removewatch(request, id):
         })
     return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
 
+def close(request, id):
+    l = getListing(id)
+    try:
+        l.active = False
+        l.save()
+    except Exception as e:
+        return renderError(e)
+    else:
+        return redirectToListing(id)
+
 # Auxiliary functions
 def getListing(id):
     try:
@@ -156,3 +166,11 @@ def getListing(id):
         return render(request, "auctions/error.html", {
             "message": e
         })
+
+def renderError(message):
+    return render(request, "auctions/error.html", {
+        "message": e
+    })
+
+def redirectToListing(id):
+    return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))

@@ -35,8 +35,9 @@
       {% endif %}
     </span>
   </div>
-  {% if user.is_authenticated %}
+  {% if user.is_authenticated and listing.creator.username != user.username %}
   <div class="listingBidContainer">
+    {% if listing.active %}
     <form action="{% url 'auctions:bid' listing.id %}" method="post">
       {% csrf_token %}
       <div class="submitBidContainer">
@@ -44,6 +45,32 @@
         <input class="submitBidButton btn btn-primary" type="submit" value="Place Bid">
       </div>
     </form>
+    {% else %}
+    <div class="submitBidContainer">
+      <strong>Auction is closed.</strong>
+      {% if listing.lastBid.bidder.username == user.username %}
+      <strong>&nbsp;Congratulations! You won this auction.</strong>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% elif user.is_authenticated and listing.creator.username == user.username %}
+  <div class="listingBidContainer">
+    {% if listing.active %}
+    <form action="{% url 'auctions:close' listing.id %}" method="post">
+      {% csrf_token %}
+      <div class="submitBidContainer">
+        <input class="submitCloseButton btn btn-danger" type="submit" value="Close Auction">
+      </div>
+    </form>
+    {% else %}
+    <div class="submitBidContainer">
+      <strong>Auction is closed. </strong>
+      {% if listing.lastBid is not None %}
+      <strong>&nbsp;{{ listing.lastBid.bidder.username }}&nbsp;won this auction.</strong>
+      {% endif %}
+    </div>
+    {% endif %}
   </div>
   {% endif %}
 {% endblock %}
