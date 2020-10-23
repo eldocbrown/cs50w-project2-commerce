@@ -20,7 +20,11 @@
     {% endif %}
   </div>
   <div class="listingImageContainer">
+    {% if listing.imageLink is not None %}
     <img class="listingImage" src="{{ listing.imageLink }}">
+    {% else %}
+    <img class="listingImage" src="/static/image/no-image.png">
+    {% endif %}
   </div>
   <div class="listingDescriptionContainer">
     <small><span class="itemDescription">{{ listing.description }}</span></small>

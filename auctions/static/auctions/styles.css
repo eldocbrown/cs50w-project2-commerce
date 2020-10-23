@@ -32,8 +32,9 @@ body {
 }
 
 .itemImage {
-    width: 100%;
-    padding:50px;
+    width: auto;
+    height: 100%;
+    padding: 50px;
 }
 
 .itemTitle {

@@ -7,7 +7,11 @@
       <a href="{% url 'auctions:listing' l.id %}">
         <div class="listingItem border">
           <div class="listingItemImage">
+            {% if l.imageLink is not None %}
             <img class="itemImage" src="{{ l.imageLink }}">
+            {% else %}
+            <img class="itemImage" src="/static/image/no-image.png">
+            {% endif %}
           </div>
           <div class="listingItemInfo">
             <div class="listingItemTitle">
