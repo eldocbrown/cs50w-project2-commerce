@@ -82,4 +82,20 @@
     {% endif %}
   </div>
   {% endif %}
+  {% if user.is_authenticated %}
+  <div class="latestCommentHeaderContainer">
+    <h4>Latest comments</h4>
+  </div>
+  <div class="latestCommentContainer">
+    {% for c in comments %}
+    <div class="comment">
+      <p><small><i>{{ c.commenter }} wrote on {{ c.created_at }}: "{{ c }}"</i></small></p>
+    </div>
+    {% empty %}
+    <div class="comment">
+      <p><small><i>No comments yet.</i></small></p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 {% endblock %}

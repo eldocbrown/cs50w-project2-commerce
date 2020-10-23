@@ -87,7 +87,8 @@ def listing(request, id):
         "listing": l,
         "bidForm": BidForm(),
         "watchers": l.watchedBy.all(),
-        "commentForm": CommentForm()
+        "commentForm": CommentForm(),
+        "comments": l.listingComments.all().order_by('-created_at')
     })
 
 @login_required(login_url="auctions:login")

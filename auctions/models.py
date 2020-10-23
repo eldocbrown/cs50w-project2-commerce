@@ -47,7 +47,10 @@ class Listing(models.Model):
             return self.startingPrice
 
 class Comment(models.Model):
-    comment = models.TextField()
+    comment = models.CharField(max_length=280)
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="usrComments")
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listingComments")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.comment
