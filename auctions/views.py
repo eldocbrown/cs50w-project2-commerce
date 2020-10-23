@@ -17,7 +17,6 @@ def index(request):
 
 def login_view(request):
     if request.method == "POST":
-
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
@@ -34,11 +33,9 @@ def login_view(request):
     else:
         return render(request, "auctions/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("auctions:index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -92,6 +89,7 @@ def listing(request, id):
         "watchers": l.watchedBy.all()
     })
 
+@login_required(login_url="auctions:login")
 def bid(request, id):
     l = getListing(id)
     f = BidForm(request.POST)
@@ -115,6 +113,7 @@ def bid(request, id):
     else:
         return renderError("Invalid Bid")
 
+@login_required(login_url="auctions:login")
 def addwatch(request, id):
     l = getListing(id)
     try:
@@ -124,6 +123,7 @@ def addwatch(request, id):
     except Exception as e:
         return renderError(e)
 
+@login_required(login_url="auctions:login")
 def removewatch(request, id):
     l = getListing(id)
     try:
@@ -134,6 +134,7 @@ def removewatch(request, id):
         return renderError(e)
     return redirectToListing(id)
 
+@login_required(login_url="auctions:login")
 def close(request, id):
     l = getListing(id)
     try:
@@ -144,6 +145,7 @@ def close(request, id):
     else:
         return redirectToListing(id)
 
+@login_required(login_url="auctions:login")
 def comment(request, id):
     pass
 
