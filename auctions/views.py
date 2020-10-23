@@ -11,9 +11,12 @@ from .forms import ListingForm, BidForm, CommentForm
 
 def index(request):
     listings = Listing.objects.filter(active=True)
-    return render(request, "auctions/index.html", {
-        "listings": listings
-    })
+    return renderListing(request, listings, "Active listings")
+
+@login_required(login_url="auctions:login")
+def watchlist(request):
+    listings = User.objects.get(username=request.user.username).listingsWatched.all()
+    return renderListing(request, listings, "Watchlist")
 
 def login_view(request):
     if request.method == "POST":
@@ -181,3 +184,9 @@ def renderError(message):
 
 def redirectToListing(id):
     return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+
+def renderListing(request, listings, heading):
+    return render(request, "auctions/index.html", {
+        "listings": listings,
+        "heading": heading
+    })
