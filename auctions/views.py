@@ -78,9 +78,7 @@ def create(request):
             # TODO: Go to listing page after creating
             return HttpResponseRedirect(reverse("auctions:index"))
         else:
-            return render(request, "auctions/error.html", {
-                "message": f.errors
-            })
+            return renderError(f.errors)
     else:
         return render(request, "auctions/create.html", {
             "createListingForm": ListingForm()
@@ -106,43 +104,35 @@ def bid(request, id):
         try: # Try setting bid to listing
             l.bid(bid)
         except Exception as ex:
-            return render(request, "auctions/error.html", {
-                "message": "Invalid Bid"
-            })
+            return renderError("Invalid Bid")
         else:
             # Save data
             bid.save()
             l.save()
             f.save_m2m()
             # Redirect to the listing page again
-            return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+            return redirectToListing(id)
     else:
-        return render(request, "auctions/error.html", {
-            "message": "Invalid Bid"
-        })
+        return renderError("Invalid Bid")
 
 def addwatch(request, id):
     l = getListing(id)
     try:
         u = User.objects.get(username=request.user.username)
         u.listingsWatched.add(l)
-        return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+        return redirectToListing(id)
     except Exception as e:
-        return render(request, "auctions/error.html", {
-            "message": e
-        })
+        return renderError(e)
 
 def removewatch(request, id):
     l = getListing(id)
     try:
         u = User.objects.get(username=request.user.username)
         u.listingsWatched.remove(l)
-        return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+        return redirectToListing(id)
     except Exception as e:
-        return render(request, "auctions/error.html", {
-            "message": e
-        })
-    return HttpResponseRedirect(reverse("auctions:listing", kwargs={'id':id}))
+        return renderError(e)
+    return redirectToListing(id)
 
 def close(request, id):
     l = getListing(id)
@@ -154,18 +144,17 @@ def close(request, id):
     else:
         return redirectToListing(id)
 
+def comment(request, id):
+    pass
+
 # Auxiliary functions
 def getListing(id):
     try:
         return Listing.objects.get(pk=id)
     except ObjectDoesNotExist:
-        return render(request, "auctions/error.html", {
-            "message": "Listing not found."
-        })
+        return renderError("Listing not found.")
     except Exception as e:
-        return render(request, "auctions/error.html", {
-            "message": e
-        })
+        return renderError(e)
 
 def renderError(message):
     return render(request, "auctions/error.html", {
