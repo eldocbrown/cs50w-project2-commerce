@@ -6,12 +6,23 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import User, Listing
+from .models import User, Listing, Category
 from .forms import ListingForm, BidForm, CommentForm
 
 def index(request):
     listings = Listing.objects.filter(active=True)
     return renderListing(request, listings, "Active listings")
+
+def categories(request):
+    categories = Category.objects.all().order_by('name')
+    return render(request, "auctions/categories.html", {
+        "categories": categories
+    })
+
+def categoryListing(request, id):
+    category = Category.objects.get(pk=id)
+    listings = Listing.objects.filter(category=category, active=True)
+    return renderListing(request, listings, f"{category.name} active listings")
 
 @login_required(login_url="auctions:login")
 def watchlist(request):

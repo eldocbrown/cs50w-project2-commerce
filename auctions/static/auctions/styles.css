@@ -68,7 +68,7 @@ body {
   padding: 20px;
 }
 
-.listingPriceContainer {
+.listingPriceContainer, .categoriesContainer {
   margin-top: 10px;
 }
 
@@ -89,4 +89,12 @@ body {
 .latestCommentContainer {
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.categoriesContainer {
+  padding-left: 10px;
+}
+
+.category {
+  margin-bottom: 10px;
 }
