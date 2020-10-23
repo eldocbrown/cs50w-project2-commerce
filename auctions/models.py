@@ -49,5 +49,5 @@ class Listing(models.Model):
 class Comment(models.Model):
     comment = models.TextField()
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="usrComments")
-    listing = listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listingComments")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listingComments")
     created_at = models.DateTimeField(auto_now_add=True)

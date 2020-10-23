@@ -38,11 +38,20 @@
   {% if user.is_authenticated and listing.creator.username != user.username %}
   <div class="listingBidContainer">
     {% if listing.active %}
+    <!-- Bid -->
     <form action="{% url 'auctions:bid' listing.id %}" method="post">
       {% csrf_token %}
       <div class="submitBidContainer">
         {{ bidForm }}
         <input class="submitBidButton btn btn-primary" type="submit" value="Place Bid">
+      </div>
+    </form>
+    <!--  Comment -->
+    <form action="{% url 'auctions:comment' listing.id %}" method="post">
+      {% csrf_token %}
+      <div class="submitCommentContainer">
+        {{ commentForm }}
+        <input class="submitCommentButton btn btn-secondary" type="submit" value="Publish">
       </div>
     </form>
     {% else %}

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
 from .models import User, Listing
-from .forms import ListingForm, BidForm
+from .forms import ListingForm, BidForm, CommentForm
 
 def index(request):
     listings = Listing.objects.filter(active=True)
@@ -86,7 +86,8 @@ def listing(request, id):
     return render(request, "auctions/listing.html", {
         "listing": l,
         "bidForm": BidForm(),
-        "watchers": l.watchedBy.all()
+        "watchers": l.watchedBy.all(),
+        "commentForm": CommentForm()
     })
 
 @login_required(login_url="auctions:login")
@@ -147,7 +148,21 @@ def close(request, id):
 
 @login_required(login_url="auctions:login")
 def comment(request, id):
-    pass
+    l = getListing(id)
+    f = CommentForm(request.POST)
+    if f.is_valid():
+        # Get Comment object
+        comm = f.save(commit=False)
+        # Set commenter and relate to listing
+        comm.commenter = request.user
+        comm.listing = l
+        # Save data
+        comm.save()
+        f.save_m2m()
+        # Redirect to the listing page again
+        return redirectToListing(id)
+    else:
+        return renderError("Invalid comment")
 
 # Auxiliary functions
 def getListing(id):
