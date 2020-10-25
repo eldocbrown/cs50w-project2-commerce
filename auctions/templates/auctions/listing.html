@@ -86,9 +86,16 @@
     {% endif %}
   </div>
   {% endif %}
+  <div class="detailsHeaderContainer">
+    <h5>Details</h5>
+  </div>
+  <div class="detailsContainer">
+    <p><small>{{ listing.creator.username }} started this auction on {{ listing.created_at }}</small></p>
+    <p><small>{{ bidCount }} bids were made</p>
+  </div>
   {% if user.is_authenticated %}
   <div class="latestCommentHeaderContainer">
-    <h4>Latest comments</h4>
+    <h5>Latest comments</h5>
   </div>
   <div class="latestCommentContainer">
     {% for c in comments %}

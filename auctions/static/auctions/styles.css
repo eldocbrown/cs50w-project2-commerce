@@ -83,11 +83,11 @@ body {
   margin-left: 20px;
 }
 
-.latestCommentContainer, .latestCommentHeaderContainer{
+.latestCommentContainer, .latestCommentHeaderContainer, .detailsHeaderContainer {
   margin-top: 10px;
 }
 
-.latestCommentContainer {
+.latestCommentContainer, .detailsContainer {
   padding-left: 10px;
   padding-right: 10px;
 }

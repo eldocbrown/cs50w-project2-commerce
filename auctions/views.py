@@ -102,7 +102,8 @@ def listing(request, id):
         "bidForm": BidForm(),
         "watchers": l.watchedBy.all(),
         "commentForm": CommentForm(),
-        "comments": l.listingComments.all().order_by('-created_at')
+        "comments": l.listingComments.all().order_by('-created_at'),
+        "bidCount": getBidCount(id)
     })
 
 @login_required(login_url="auctions:login")
@@ -183,6 +184,14 @@ def comment(request, id):
 def getListing(id):
     try:
         return Listing.objects.get(pk=id)
+    except ObjectDoesNotExist:
+        return renderError("Listing not found.")
+    except Exception as e:
+        return renderError(e)
+
+def getBidCount(id):
+    try:
+        return Listing.objects.get(pk=id).listingBids.count()
     except ObjectDoesNotExist:
         return renderError("Listing not found.")
     except Exception as e:
