@@ -99,3 +99,20 @@ body {
 .category {
   margin-bottom: 10px;
 }
+
+#listingFormDescription {
+    height: 30vh;
+    width: 100%;
+}
+
+#listingFormTitle {
+  width: 50%;
+}
+
+#listingFormImageLink {
+  width: 50%;
+}
+
+#listingFormStartingPrice {
+  width: 15%;
+}
