@@ -89,7 +89,7 @@ def create(request):
             # TODO: Go to listing page after creating
             return HttpResponseRedirect(reverse("auctions:index"))
         else:
-            return renderError(f.errors)
+            return renderError(request, f.errors)
     else:
         return render(request, "auctions/create.html", {
             "createListingForm": ListingForm()
@@ -119,7 +119,7 @@ def bid(request, id):
         try: # Try setting bid to listing
             l.bid(bid)
         except Exception as ex:
-            return renderError("Invalid Bid")
+            return renderError(request, "Invalid Bid")
         else:
             # Save data
             bid.save()
@@ -128,7 +128,7 @@ def bid(request, id):
             # Redirect to the listing page again
             return redirectToListing(id)
     else:
-        return renderError("Invalid Bid")
+        return renderError(request, "Invalid Bid")
 
 @login_required(login_url="auctions:login")
 def addwatch(request, id):
@@ -138,7 +138,7 @@ def addwatch(request, id):
         u.listingsWatched.add(l)
         return redirectToListing(id)
     except Exception as e:
-        return renderError(e)
+        return renderError(request, e)
 
 @login_required(login_url="auctions:login")
 def removewatch(request, id):
@@ -148,7 +148,7 @@ def removewatch(request, id):
         u.listingsWatched.remove(l)
         return redirectToListing(id)
     except Exception as e:
-        return renderError(e)
+        return renderError(request, e)
     return redirectToListing(id)
 
 @login_required(login_url="auctions:login")
@@ -158,7 +158,7 @@ def close(request, id):
         l.active = False
         l.save()
     except Exception as e:
-        return renderError(e)
+        return renderError(request, e)
     else:
         return redirectToListing(id)
 
@@ -178,28 +178,28 @@ def comment(request, id):
         # Redirect to the listing page again
         return redirectToListing(id)
     else:
-        return renderError("Invalid comment")
+        return renderError(request, "Invalid comment")
 
 # Auxiliary functions
 def getListing(id):
     try:
         return Listing.objects.get(pk=id)
     except ObjectDoesNotExist:
-        return renderError("Listing not found.")
+        return renderError(request, "Listing not found.")
     except Exception as e:
-        return renderError(e)
+        return renderError(request, e)
 
 def getBidCount(id):
     try:
         return Listing.objects.get(pk=id).listingBids.count()
     except ObjectDoesNotExist:
-        return renderError("Listing not found.")
+        return renderError(request, "Listing not found.")
     except Exception as e:
-        return renderError(e)
+        return renderError(request, e)
 
-def renderError(message):
+def renderError(request, message):
     return render(request, "auctions/error.html", {
-        "message": e
+        "message": message
     })
 
 def redirectToListing(id):
